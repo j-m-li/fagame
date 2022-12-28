@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Invader</title>
+</head>
+<body>
+<canvas width="320" height="240" style="border:1px solid black;" id="canvas"></canvas>
+<script>
+class Ship {
+	constructor (x, y) {
+		this.x = x;
+		this.y = y;
+		this.osc = audio.createOscillator();
+		this.osc.connect(gain);
+		this.osc.ended = true;
+		this.osc.onended = this.endedCb;
+	}
+	
+	endedCb(e) {
+		e.target.ended = true;
+	} 
+
+	draw(c) {
+		c.beginPath();
+		c.moveTo(this.x, this.y);
+		c.lineTo(this.x + 10, this.y);
+		c.stroke();
+		c.closePath();
+	}
+
+	move(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	action() {
+		if (this.x < 1) {
+			this.x = 1;
+		}
+		if (this.x > canvas.width - 10) {
+			this.x = canvas.width - 10;
+		}
+	}
+	
+	moveRight() {
+		this.x += 5;
+	}
+	moveLeft() {
+		this.x -= 5;
+	}
+	check() {
+	}
+
+	fire() {
+		//gain.gain.exponentialRampToValueAtTime(0.00001, audio.currentTime + 0.05);
+		if (this.osc.ended) {
+			this.osc.disconnect();
+			this.osc = audio.createOscillator();
+			this.osc.connect(gain);
+			this.osc.type = "square";
+			this.osc.frequency.setValueAtTime(300, audio.currentTime);
+			this.osc.frequency.linearRampToValueAtTime(100, audio.currentTime + 0.2);
+			this.osc.start(0);
+			this.osc.stop(audio.currentTime + 0.2);
+			this.osc.onended = this.endedCb;
+			this.osc.ended = false;
+		}
+		
+		objs.push(new Bullet(this.x, this.y));
+	}
+}
+
+class Bullet {
+	constructor (x, y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	draw(c) {
+		c.beginPath();
+		c.moveTo(this.x, this.y);
+		c.lineTo(this.x + 2, this.y);
+		c.stroke();
+		c.closePath();
+	}
+
+	action() {
+		this.y -= 10;
+		if (this.y < 1) {
+			remove(this);
+		}
+	}
+
+	check() {
+	}
+}
+
+class Alien {
+	constructor (x, y) {
+		this.x = x;
+		this.y = y;
+		this.dx = 3;
+	}
+	
+	draw(c) {
+		c.beginPath();
+		c.moveTo(this.x, this.y);
+		c.lineTo(this.x + 4, this.y + 4);
+		c.stroke();
+		c.closePath();
+	}
+
+	action() {
+		this.x += this.dx;
+		if (this.x < 10 || this.x > canvas.width - 10) {
+			this.dx = -this.dx;
+		}
+	}
+
+	check() {
+		for (var i = 0; i < objs.length; i++) {
+			if (objs[i] != this) {
+				
+				return;
+			}
+		}	
+
+	}
+}
+
+
+function remove(o) {
+	for (var i = 0; i < objs.length; i++) {
+		if (objs[i] == o) {
+			objs.splice(i, 1);
+			return;
+		}
+	}	
+}
+
+function timerCb() {
+	for (var o in objs) {
+		objs[o].action();
+	}
+
+	for (var o in objs) {
+		objs[o].check();
+	}
+
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	for (var o in objs) {
+		objs[o].draw(ctx);
+	}
+	
+}
+
+function mousemoveCb(e) {
+	var r = canvas.getBoundingClientRect();
+	var x = e.clientX - r.left;
+	var y = e.clientY - r.top;
+	objs[0].move(x, canvas.height - 5);
+}
+
+function clickCb(e) {
+	objs[0].fire();
+
+}
+
+function keydownCb(e) {
+	if (e.code == "ArrowLeft") {
+		objs[0].moveLeft();
+	}
+	if (e.code == "ArrowRight") {
+		objs[0].moveRight();
+	}
+	if (e.key == " ") {
+		objs[0].fire();
+	}
+}
+
+// ---------------  main() ------------- //
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var audio = new AudioContext();
+var gain = audio.createGain();
+var timer = setInterval(timerCb, 50);
+var objs = new Array();
+objs.push(new Ship(100, canvas.height - 5));
+objs.push(new Alien(10, 2));
+objs.push(new Alien(80, 2));
+objs.push(new Alien(150, 2));
+
+gain.gain.setValueAtTime(0.005, audio.currentTime);
+gain.connect(audio.destination);
+window.addEventListener("mousemove", mousemoveCb);
+window.addEventListener("click", clickCb);
+window.addEventListener("keydown", keydownCb);
+
+</script>
+</body>
+</html>
