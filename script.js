@@ -1,3 +1,6 @@
+
+// The authors disclaim copyright to this software.
+
 include ("./Os");
 include ("./Game");
 

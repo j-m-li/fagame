@@ -1,3 +1,6 @@
+
+// The authors disclaim copyright to this software.
+
 class Os {
 constructor () {
 	this.canvas = document.getElementById("canvas");

@@ -1,3 +1,6 @@
+
+// The authors disclaim copyright to this software.
+
 class Piece {
 
 static get STATE_VISIBLE() 	{return 1;}

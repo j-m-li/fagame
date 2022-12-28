@@ -1,3 +1,6 @@
+
+// The authors disclaim copyright to this software.
+
 class Man extends Piece {
 constructor(x, y, w, h) {
 	super(x, y, w, h);
