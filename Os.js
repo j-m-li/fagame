@@ -136,4 +136,4 @@ fire_noise() {
 	}
 }
 
-} // class
+} 

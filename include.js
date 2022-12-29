@@ -35,14 +35,31 @@ function include(src)
 	let s = document.createElement("script");
 	let r = document.getElementById("scripts").parentNode;
 	let x = null;
+	let lst = r.lastChild;
 	r.appendChild(s);
-	s.setAttribute("src", src + ".js");
-	s.addEventListener("load", includeScriptLoaded, false);
+	if (include_loading == 1) {
+		s.setAttribute("src", src + ".js");
+	} else {
+		s.setAttribute("src_", src + ".js");
+		//s.setAttribute("src", "");
+	}
+	//s.setAttribute("id", "s" + include_loadin);
+	s.addEventListener("load", end, false);
 }
 
-function includeScriptLoaded(ev)
+function end(ev)
 {
 	include_loading--;
+	let r = document.getElementById("scripts").parentNode;
+	let c = r.getElementsByTagName("script");
+	let i = 0;
+	while (i < c.length) {
+		if (c[i].getAttribute("src") === null) {
+			c[i].setAttribute("src", c[i].getAttribute("src_"));
+			return;
+		}
+		i++;
+	}
 	if (include_loading == 0) {
 	
 		include_loading = -128;

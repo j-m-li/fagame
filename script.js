@@ -1,8 +1,8 @@
 
 // The authors disclaim copyright to this software.
 
-include ("./Os");
-include ("./Game");
+include("./Os");
+include("./Game");
 include("./Piece");
 include("./Man");
 

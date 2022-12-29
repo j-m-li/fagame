@@ -78,4 +78,4 @@ hit(o) {
 	return false;
 }
 
-} // class
+} 

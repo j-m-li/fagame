@@ -50,4 +50,4 @@ collision(world, o) {
 	}
 }
 
-} // class
+}
