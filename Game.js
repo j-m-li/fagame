@@ -41,10 +41,9 @@ kbdHit(e) {
 	if (e.code == "ArrowRight") {
 	}
 	if (e.key == " ") {
-	
+		this.os.fire_noise();
 	}
-	this.os.fire_noise();
-}
+	
 
 click(e) {
 	this.os.fire_noise();

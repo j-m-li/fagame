@@ -3,9 +3,9 @@
 
 class Piece {
 
-static get STATE_VISIBLE() 	{return 1;}
-static get STATE_HIT() 		{return 2;}
-static get STATE_REMOVE() 	{return 3;}
+static STATE_VISIBLE = 1;
+static STATE_HIT = 2;
+static STATE_REMOVE = 4;
 
 constructor (x, y, w, h) {
 	this.x = x; // left
