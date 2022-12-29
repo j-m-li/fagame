@@ -43,7 +43,7 @@ kbdHit(e) {
 	if (e.key == " ") {
 		this.os.fire_noise();
 	}
-	
+}
 
 click(e) {
 	this.os.fire_noise();
