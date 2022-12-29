@@ -13,10 +13,18 @@ constructor (x, y, w, h) {
 	this.w = w;
 	this.h = h; 
 	this.state = Piece.STATE_VISIBLE;
+	this.xspeed = -1;
+	this.yspeed = 0;
+	this.g = 9.81;
 }
 
 setState(s) {
 	this.state = s;
+}
+
+addSpeed (x, y) {
+	this.xspeed += x;
+	this.yspeed += y;
 }
 
 draw(c) {
@@ -35,15 +43,26 @@ move(x, y) {
 	this.y = y;
 }
 
-step() {
+step(world) {
+	this.x += this.xspeed;
+	this.y += this.yspeed;
+	this.yspeed += this.g / 20;
+
 	switch (this.state) {
 	case Piece.STATE_VISIBLE:
-		this.x += 0.1;
 		break;
 	case Piece.STATE_HIT:
 		this.x += -1;
 		break;
 	
+	}
+	if (this.y + this.h > world.ground) {
+		this.y = world.ground - this.h;
+		this.yspeed = 0;
+	}
+	if (this.x + this.w < 0) {
+		this.x = world.w;
+		this.h = 40 + 60 * Math.random();
 	}
 }
 

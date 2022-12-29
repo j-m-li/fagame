@@ -3,6 +3,8 @@
 
 include ("./Os");
 include ("./Game");
+include("./Piece");
+include("./Man");
 
 TheApp = class TheApp {
 	static main()
