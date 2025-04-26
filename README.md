@@ -3,4 +3,4 @@ a game
 
 ***
 
-https://jeanmarclienher.github.io/fagame/
+[play](https://j-m-li.github.io/fagame/)
